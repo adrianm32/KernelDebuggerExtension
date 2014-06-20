@@ -34,6 +34,10 @@ HRESULT CALLBACK help(_In_ PDEBUG_CLIENT DebugClient, _In_opt_ PCSTR args)
 	Block = HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, BlockSize);   //GetProcessHeap Retrieves a handle to the default heap of the calling process
 	IFCNULL(Block);
 
+	IFC(GetFileVersionInfoW(FileName, Handle, BlockSize, Block));
+	IFCNULL(Block);
+
+	IFC(VerQueryValueW(Block, _T("\\StringFileInfo\\040904b0\\FileVersion"), &String, &Length));
 
 
 Cleanup:

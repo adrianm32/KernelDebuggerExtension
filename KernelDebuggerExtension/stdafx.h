@@ -23,4 +23,5 @@ SDKDDKVer.h is the header file that actually defines the #defines that represent
 #define IFCPTR(x) if ((x) == NULL) {hr = E_POINTER; goto Cleanup;}
 #define IFCW32(x) {hr = HRESULT_FROM_WIN32(x); if (FAILED(hr)){ goto Cleanup;}}
 #define IFCEXPECT(x)  if (!(x)) {hr = E_UNEXPECTED; goto Cleanup;}
+#define IFCNULL(x) if (x) { hr = S_OK;} else { hr = E_FAIL; goto Cleanup;}
 #define IGNOREHR (x) (void)x

@@ -32,3 +32,19 @@ void ReleaseInterfaces()
 	if (DebugRegisters) { DebugRegisters->Release(); DebugRegisters = nullptr; }
 }
 
+
+HRESULT CALLBACK DebugExtensionInitialize(_Out_ PULONG version, _Out_ PULONG flags)
+{
+	*version = DEBUG_EXTENSION_VERSION(1, 0);
+	*flags = 0;
+
+	return S_OK;
+}
+
+void CALLBACK DebugExtensionUninitialize()
+{
+	return;
+}
+
+
+

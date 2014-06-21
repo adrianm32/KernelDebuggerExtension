@@ -34,13 +34,26 @@ HRESULT CALLBACK help(_In_ PDEBUG_CLIENT DebugClient, _In_opt_ PCSTR args)
 	Block = HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, BlockSize);   //GetProcessHeap Retrieves a handle to the default heap of the calling process
 	IFCNULL(Block);
 
-	IFC(GetFileVersionInfoW(FileName, Handle, BlockSize, Block));
+	IFC(GetFileVersionInfo(FileName, Handle, BlockSize, Block));
 	IFCNULL(Block);
 
-	IFC(VerQueryValueW(Block, _T("\\StringFileInfo\\040904b0\\FileVersion"), &String, &Length));
+	IFC(VerQueryValue(Block, _T("\\StringFileInfo\\040904b0\\FileVersion"), &String, &Length));
+	IFC(StringCchCat(Text, MAX_PATH, reinterpret_cast<wchar_t *> (String)));
+	IFC(DebugControl->OutputWide(DEBUG_OUTPUT_NORMAL, Text));
+	IFC(DebugControl->OutputWide(DEBUG_OUTPUT_NORMAL, _T("\n")));
 
+	IFC(VerQueryValue(Block, _T("\\StringFileInfo\\040904b0\\LegalCopyRight"), &String, &Length));
+	IFC(StringCchCopy(Text, MAX_PATH, reinterpret_cast<wchar_t *> (String)));
+	IFC(DebugControl->OutputWide(DEBUG_OUTPUT_NORMAL, Text));
+	IFC(DebugControl->OutputWide(DEBUG_OUTPUT_NORMAL, _T("\n\n")));
+
+	IFC(DebugControl->ControlledOutputWide(DEBUG_OUTCTL_ALL_CLIENTS | DEBUG_OUTCTL_DML, DEBUG_OUTPUT_NORMAL,
+		_T("help - Displays this list\n")
+		_T("st - Displays system service table\n")
+		));
 
 Cleanup:
+	if (Block) HeapFree(GetProcessHeap(), 0, Block);
 	DebugControl->Release();
 	return hr;
 }

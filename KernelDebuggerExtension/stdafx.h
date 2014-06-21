@@ -17,6 +17,7 @@ SDKDDKVer.h is the header file that actually defines the #defines that represent
 #include <DbgEng.h>   //debug engine header file
 
 #include <tchar.h>
+#include <strsafe.h>
 
 #define IFC(x)    {hr = (x); if (FAILED(hr)){ goto Cleanup;}}
 #define IFCOOM(x) if ((x) == NULL) {hr = E_OUTOFMEMORY; goto Cleanup;}

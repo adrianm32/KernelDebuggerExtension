@@ -30,6 +30,26 @@ HRESULT CALLBACK st(_In_ PDEBUG_CLIENT DebugClient, _In_ PCSTR args)
 	IFC(DebugSymbols->GetOffsetByName("nt!KeServiceDescriptorTable", &KeServiceDescriptorTable));  //equivalent of x nt!KeServiceDescriptorTable
 	IFC(DebugSymbols->GetOffsetByName("nt!KiServiceLimit", &KiServiceLimit));  //equivalent of x nt!KiServiceLimit
 
+	IFC(DebugDataSpaces->ReadPointersVirtual(1, KeServiceDescriptorTable, &ServiceTableBase)); // dt nt!KeServiceDescriptortable
+	IFC(DebugDataSpaces->ReadVirtual(KiServiceLimit, &Limit, sizeof(Limit), &BytesRead));
+
+	Address = ServiceTableBase;
+
+	IFC(DebugControl->Output(DEBUG_OUTPUT_NORMAL, "\n"));
+
+	if (ProcessorType == IMAGE_FILE_MACHINE_I386)
+	{
+		for (i = 0; i < Limit; i++, Address += sizeof(ULONG))
+		{
+
+		}
+
+	}
+	else if (ProcessorType == IMAGE_FILE_MACHINE_AMD64)
+	{
+
+	}
+
 Cleanup:
 	ReleaseInterfaces();
 	return hr;

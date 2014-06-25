@@ -3,3 +3,4 @@ EXPORTS
 	DebugExtensionUninitialize
 
 	help
+	st
